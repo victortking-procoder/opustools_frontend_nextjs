@@ -1,25 +1,25 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
-// --- Updated Metadata Object ---
 export const metadata: Metadata = {
   title: {
     default: "OpusTools | Free & Secure Online File Conversion Tools",
     template: "%s | OpusTools",
   },
   description: "A complete suite of free online tools to compress, convert, and edit your images and PDF documents securely and efficiently.",
-  metadataBase: new URL("https://opustools.xyz"),
+  manifest: "/manifest.json",
   appleWebApp: {
     title: 'OpusTools',
     statusBarStyle: 'default',
   },
+  metadataBase: new URL("https://opustools.xyz"),
   openGraph: {
     title: "OpusTools | Free & Secure Online File Conversion Tools",
     description: "A complete suite of free online tools to compress, convert, and edit your images and PDF documents.",
@@ -43,7 +43,6 @@ export const metadata: Metadata = {
   },
 };
 
-// --- Updated RootLayout Component ---
 export default function RootLayout({
   children,
 }: Readonly<{
