@@ -25,7 +25,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const initializeAuth = async () => {
+      try {
+        await api.get('/auth/csrf/');
+      } catch (error) {
+        console.error('Failed to fetch CSRF token', error);
+      }
+
       const token = localStorage.getItem('authToken');
       if (token) {
         api.defaults.headers.common['Authorization'] = `Token ${token}`;
@@ -35,12 +41,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
           console.error('Failed to fetch user', error);
           localStorage.removeItem('authToken');
-          api.defaults.headers.common['Authorization'] = '';
+          delete api.defaults.headers.common['Authorization'];
         }
       }
       setIsLoading(false);
     };
-    fetchUser();
+
+    initializeAuth();
   }, []);
 
   return (
