@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OpusTools Frontend (Next.js Version)
 
-## Getting Started
+![OpusTools Open Graph Image](/public/og-image.png)
 
-First, run the development server:
+This is the official frontend for **OpusTools**, a powerful, free-to-use web application for all your file processing needs. This project is built with Next.js for optimal performance, SEO, and a modern user experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Live Site:** [https://opustools.xyz](https://opustools.xyz)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+A complete suite of tools to handle your image and PDF files, all in one place.
 
-## Learn More
+### 🖼️ Image Tools
+- **Image Compressor:** Reduce the file size of JPG, PNG, and WebP images with an adjustable quality slider.
+- **Image Resizer:** Easily resize images by specifying a new width or height while maintaining aspect ratio.
+- **Image Converter:** Convert images between various formats, including PNG, JPEG, WEBP, GIF, and more.
 
-To learn more about Next.js, take a look at the following resources:
+### 📄 PDF Tools
+- **PDF Merger:** Combine multiple PDF documents into a single file with an easy-to-use drag-and-drop interface to reorder files.
+- **PDF Splitter:** Extract specific pages or page ranges from any PDF document.
+- **PDF Compressor:** Reduce the size of your PDF files with adjustable compression levels (low, medium, high).
+- **PDF Converter:** Convert your PDFs into editable formats like Word (.docx), Excel (.xlsx), PowerPoint (.pptx), or to a JPG image.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🔐 Authentication
+- **User Accounts:** Sign up for a free account to get unlimited access to all tools.
+- **Forgot Password:** A secure, email-based password reset flow.
+- **Account Management:** Users can view and update their profile information.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🚀 Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project leverages a modern, robust tech stack for a fast and reliable user experience.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** [Next.js](https://nextjs.org/) (React)
+- **Styling:** [CSS Modules](https://nextjs.org/docs/app/building-your-application/styling/css-modules)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **API Communication:** [Axios](https://axios-http.com/)
+- **Deployment:** [Vercel](https://vercel.com/)

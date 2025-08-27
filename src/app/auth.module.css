@@ -1,0 +1,125 @@
+/* src/app/auth.module.css */
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 450px; /* Max width for the form card */
+  padding: 2rem;
+  background-color: #1a1936; /* base-200 */
+  border: 1px solid #2c2b4f80; /* base-300 with 50% opacity */
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #9ca3af; /* text-gray-400 */
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  color: #f3f4f6; /* text-gray-100 */
+  background-color: #0d0c22; /* base-100 */
+  border: 1px solid #2c2b4f; /* base-300 */
+  border-radius: 0.375rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6f42c1; /* accent */
+  box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.4);
+}
+
+.nameFields {
+  display: flex;
+  gap: 1rem;
+}
+
+.nameFields > div {
+  width: 50%;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  background-color: #6f42c1; /* accent */
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+  background-color: rgba(111, 66, 193, 0.8);
+}
+
+.redirectText {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #9ca3af; /* text-gray-400 */
+  margin-top: 1.5rem;
+}
+
+.redirectLink {
+  font-weight: 500;
+  color: #6f42c1; /* accent */
+  text-decoration: none;
+}
+
+.redirectLink:hover {
+  text-decoration: underline;
+}
+
+/* src/app/auth.module.css */
+
+/* ... (all existing styles) ... */
+
+/* Media Query for mobile devices (screens 768px or smaller) */
+@media (max-width: 768px) {
+  .formContainer {
+    padding: 1rem;
+  }
+
+  .formWrapper {
+    padding: 1.5rem;
+  }
+
+  .nameFields {
+    flex-direction: column; /* Stack first and last name fields */
+    gap: 1.5rem; /* Keep the same gap as other fields */
+  }
+
+  .nameFields > div {
+    width: 100%; /* Make each field take full width */
+  }
+}

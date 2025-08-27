@@ -1,0 +1,232 @@
+/* src/app/tools/image-compressor/ImageCompressor.module.css */
+.toolContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #1a1936; /* base-200 */
+  border: 1px solid #2c2b4f; /* base-300 */
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  text-align: center;
+  color: #9ca3af;
+  margin-bottom: 2rem;
+}
+
+.options {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background-color: #0d0c22; /* base-100 */
+  border-radius: 0.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db; /* text-gray-300 */
+  margin-bottom: 0.5rem;
+}
+
+.slider {
+  width: 100%;
+}
+
+.qualityValue {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #6f42c1; /* accent */
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton:disabled {
+  background-color: #4a3d6a;
+  cursor: not-allowed;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: rgba(111, 66, 193, 0.8);
+}
+
+.statusBar {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.statusProcessing {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+
+.statusCompleted {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.statusError {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.downloadButton {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: #ffffff;
+  background-color: #10b981; /* A green color for success */
+  border: none;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.downloadButton:hover {
+  background-color: #059669;
+}
+
+.seoContent {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #0d0c22;
+  border-radius: 0.5rem;
+}
+
+.seoTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.seoSubtitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.seoContent p, .seoContent li {
+  color: #9ca3af;
+}
+
+.seoContent ul {
+  list-style-position: inside;
+  padding-left: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .toolContainer {
+    padding: 1rem;
+  }
+  .title {
+    font-size: 1.5rem;
+  }
+  .seoTitle {
+    font-size: 1.25rem;
+  }
+}
+
+.previewContainer {
+  display: flex; /* Add this */
+  flex-direction: column; /* Add this */
+  align-items: center; /* Add this to center horizontally */
+  word-break: break-all;
+}
+
+.previewImage {
+  max-width: 100%; /* Add this */
+  height: auto; /* Add this to maintain aspect ratio */
+  max-height: 200px;
+  border-radius: 0.5rem;
+}
+
+/* src/app/tools/ImageTool.module.css */
+
+/* ... (all existing styles) ... */
+
+.dimensionInputs {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.dimensionInput {
+  flex: 1; /* Makes both input fields take up equal space */
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  color: #f3f4f6; /* text-gray-100 */
+  background-color: #0d0c22; /* base-100 */
+  border: 1px solid #2c2b4f; /* base-300 */
+  border-radius: 0.375rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6f42c1; /* accent */
+  box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.4);
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+  .dimensionInputs {
+    flex-direction: column; /* Stacks the width/height inputs vertically */
+  }
+}
+
+/* src/app/tools/ImageTool.module.css */
+
+/* ... (all existing styles) ... */
+
+.selectInput {
+  width: 100%;
+  padding: 0.75rem;
+  color: #f3f4f6;
+  background-color: #0d0c22;
+  border: 1px solid #2c2b4f;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.selectInput:focus {
+  outline: none;
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.4);
+}

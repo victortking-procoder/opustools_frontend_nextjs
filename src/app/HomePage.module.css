@@ -1,0 +1,167 @@
+/* src/app/HomePage.module.css */
+.hero {
+  text-align: center;
+  padding: 4rem 1rem 2rem 1rem;
+}
+
+.headline {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+}
+
+.tagline {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: #9ca3af;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section {
+  padding: 3rem 1rem;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #2c2b4f;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.featureCard, .stepCard {
+  background-color: #1a1936;
+  border: 1px solid #2c2b4f;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.featureIcon, .stepNumber {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #6f42c1; /* accent */
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  color: #9ca3af;
+}
+
+.toolCard {
+  background-color: #1a1936;
+  border: 1px solid #2c2b4f;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.toolCard:hover {
+  transform: translateY(-5px);
+  border-color: #6f42c1;
+}
+
+.toolName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.toolDescription {
+  margin-top: 0.5rem;
+  color: #9ca3af;
+  flex-grow: 1;
+}
+
+/* Media Query for mobile devices (screens 768px or smaller) */
+@media (max-width: 768px) {
+  .headline {
+    font-size: 2.25rem; /* Make headline smaller on mobile */
+  }
+
+  .tagline {
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .toolsGrid {
+    /* This will stack the cards in a single column */
+    grid-template-columns: 1fr;
+  }
+}
+
+/* src/app/HomePage.module.css */
+
+/* ... (all other existing styles) ... */
+
+.faqContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  border-bottom: 1px solid #2c2b4f;
+  padding: 1.5rem 0;
+}
+
+.faqQuestion {
+  /* --- New styles to make the question a clickable button --- */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  /* -------------------------------------------------------- */
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.faqIcon {
+  font-size: 1.5rem;
+  color: #9ca3af;
+  transition: transform 0.3s ease;
+}
+
+.faqAnswer {
+  color: #9ca3af;
+  line-height: 1.6;
+  /* --- New styles for the expand/collapse animation --- */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, margin-top 0.5s ease;
+  /* ---------------------------------------------------- */
+}
+
+.faqAnswerVisible {
+  max-height: 200px; /* Adjust if your answers are very long */
+  margin-top: 1rem;
+}
