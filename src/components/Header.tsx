@@ -84,6 +84,7 @@ const Header = () => {
         {/* Desktop Navigation */}
         <div className={styles.desktopNav}>
           <div className={styles.navLinks}>
+            <Link href="/blog" className={styles.signInLink}>Blog</Link>
             <Dropdown title="Image Tools" items={imageTools} />
             <Dropdown title="PDF Tools" items={pdfTools} />
             {!isLoading && (
@@ -115,6 +116,7 @@ const Header = () => {
       {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
         <div className={styles.mobileMenu}>
+          <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
           <h3 style={{color: '#9ca3af', fontSize: '0.875rem', padding: '0.75rem', textTransform: 'uppercase'}}>Image Tools</h3>
           {imageTools.map(tool => <Link key={tool.href} href={tool.href} onClick={() => setIsMobileMenuOpen(false)}>{tool.name}</Link>)}
           

@@ -1,0 +1,73 @@
+/* src/app/blog/Blog.module.css */
+.pageHeader {
+  text-align: center;
+  padding: 2rem 1rem 4rem 1rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.subtitle {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: #9ca3af;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 0 1rem 4rem 1rem;
+}
+
+.postCard {
+  background-color: #1a1936;
+  border: 1px solid #2c2b4f;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.postCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.thumbnail {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 1.5rem;
+}
+
+.postTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.postExcerpt {
+  margin-top: 0.75rem;
+  color: #9ca3af;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.authorInfo {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #7b8ea0;
+}
