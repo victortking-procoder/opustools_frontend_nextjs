@@ -1,5 +1,3 @@
-'use client';
-
 import api from '@/lib/api';
 import styles from '../BlogStyles.module.css';
 import { Metadata } from 'next';
