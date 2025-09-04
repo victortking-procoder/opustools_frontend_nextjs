@@ -1,15 +1,10 @@
-// src/app/blog/page.tsx
+'use client'; // make this a client component
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import styles from './BlogStyles.module.css';
-import { Metadata } from 'next';
-
-// SEO Metadata for the main blog page
-export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Tutorials, articles, and updates from the OpusTools team.',
-};
 
 // Define the shape of a Post object
 interface Post {
@@ -24,29 +19,41 @@ interface Post {
 // Define the shape of the paginated API response
 interface PaginatedResponse {
   results: Post[];
+  next: string | null;
+  previous: string | null;
 }
 
-// This function fetches the list of posts on the server
-async function getPosts(): Promise<Post[]> {
-  try {
-    const response = await api.get<PaginatedResponse>('/blog/posts/');
-    return response.data.results || [];
-  } catch (error) {
-    console.error('Failed to fetch posts:', error);
-    return [];
-  }
-}
-
-// A helper function to create a simple text excerpt from HTML
+// Helper to create excerpt from HTML
 function createExcerpt(htmlContent: string, length = 150): string {
   if (!htmlContent) return '';
   const text = htmlContent.replace(/<[^>]+>/g, ''); // Strip HTML tags
   return text.length <= length ? text : text.slice(0, length) + '...';
 }
 
-// The main page component (Server Component)
-export default async function BlogPage() {
-  const posts = await getPosts();
+export default function BlogPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [nextPage, setNextPage] = useState<string | null>('/blog/posts/');
+  const [loading, setLoading] = useState(false);
+
+  // Fetch posts from API
+  const loadPosts = async (url: string) => {
+    if (!url) return;
+    setLoading(true);
+    try {
+      const response = await api.get<PaginatedResponse>(url);
+      setPosts((prev) => [...prev, ...response.data.results]);
+      setNextPage(response.data.next);
+    } catch (err) {
+      console.error('Failed to load posts:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    if (nextPage) loadPosts(nextPage);
+  }, []);
 
   return (
     <div>
@@ -60,11 +67,7 @@ export default async function BlogPage() {
       <main className={styles.postsGrid}>
         {posts.length > 0 ? (
           posts.map((post) => (
-            <Link
-              href={`/blog/${post.slug}`}
-              key={post.id}
-              className={styles.postCard}
-            >
+            <Link href={`/blog/${post.slug}`} key={post.id} className={styles.postCard}>
               <div className={styles.thumbnailWrapper}>
                 {post.cover_image ? (
                   <Image
@@ -77,7 +80,7 @@ export default async function BlogPage() {
                   />
                 ) : (
                   <Image
-                    src="/og-image.png" // fallback
+                    src="/og-image.png"
                     alt="Default thumbnail"
                     fill
                     sizes="(max-width: 768px) 100vw, 250px"
@@ -97,6 +100,27 @@ export default async function BlogPage() {
           <p>No posts found.</p>
         )}
       </main>
+
+      {/* Load More button */}
+      {nextPage && (
+        <div style={{ textAlign: 'center', margin: '2rem 0' }}>
+          <button
+            onClick={() => loadPosts(nextPage)}
+            disabled={loading}
+            style={{
+              padding: '0.75rem 1.5rem',
+              fontSize: '1rem',
+              backgroundColor: '#3b82f6',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+            }}
+          >
+            {loading ? 'Loading...' : 'Load More'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
