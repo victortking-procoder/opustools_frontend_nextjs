@@ -1,7 +1,8 @@
 // src/app/sitemap.ts
 import { MetadataRoute } from 'next'
+import api from '@/lib/api'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://opustools.xyz';
 
   const toolUrls = [
@@ -20,6 +21,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly',
     priority: 0.8,
   }));
+
+  // ✅ Use axios instance with baseURL = https://api.opustools.xyz/api
+  let blogEntries: MetadataRoute.Sitemap = [];
+  try {
+    const response = await api.get('/blog/posts/'); // → https://api.opustools.xyz/api/blog/posts/
+    const posts = response.data.results;
+
+    blogEntries = posts.map((post: any) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.updated_at || post.created_at),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch posts for sitemap:', error);
+  }
 
   return [
     {
@@ -40,6 +57,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.5,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
     ...toolEntries,
-  ]
+    ...blogEntries,
+  ];
 }
