@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.opustools.xyz',
+        port: '',
+        pathname: '/media/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

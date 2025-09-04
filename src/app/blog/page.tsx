@@ -2,44 +2,51 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import api from '@/lib/api';
-import styles from './Blog.module.css';
+import styles from './BlogStyles.module.css';
 import { Metadata } from 'next';
 
+// SEO Metadata for the main blog page
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Tutorials, articles, and updates from the OpusTools team.',
 };
 
+// Define the shape of a Post object
 interface Post {
   id: number;
   title: string;
   slug: string;
   content: string;
   author_username: string;
-  thumbnail: string | null;
+  cover_image: string | null;
 }
 
-// This function fetches the data on the server
+// Define the shape of the paginated API response
+interface PaginatedResponse {
+  results: Post[];
+}
+
+// This function fetches the list of posts on the server
 async function getPosts(): Promise<Post[]> {
   try {
-    const response = await api.get('/blog/posts/', {
-      // Use an internal, direct fetch on the server to avoid unnecessary HTTP requests
-      baseURL: process.env.INTERNAL_API_URL || 'http://127.0.0.1:8000/api',
-    });
-    return response.data;
+    const response = await api.get<PaginatedResponse>('/blog/posts/');
+    // Correctly access the 'results' array from the paginated response
+    return response.data.results || [];
   } catch (error) {
     console.error('Failed to fetch posts:', error);
-    return [];
+    return []; // Return an empty array on error to prevent crashes
   }
 }
 
-// A helper function to create a simple text excerpt
-function createExcerpt(htmlContent: string, length = 150) {
+// A helper function to create a simple text excerpt from HTML
+function createExcerpt(htmlContent: string, length = 150): string {
+  if (!htmlContent) return '';
   const text = htmlContent.replace(/<[^>]+>/g, ''); // Strip HTML tags
   if (text.length <= length) return text;
   return text.slice(0, length) + '...';
 }
 
+// The main page component (Server Component)
 export default async function BlogPage() {
   const posts = await getPosts();
 
@@ -53,22 +60,29 @@ export default async function BlogPage() {
       </header>
 
       <main className={styles.postsGrid}>
-        {posts.map((post) => (
-          <Link href={`/blog/${post.slug}`} key={post.id} className={styles.postCard}>
-            <Image
-              src={post.thumbnail || '/og-image.png'} // Use a fallback image
-              alt={post.title}
-              width={400}
-              height={200}
-              className={styles.thumbnail}
-            />
-            <div className={styles.cardContent}>
-              <h2 className={styles.postTitle}>{post.title}</h2>
-              <p className={styles.postExcerpt}>{createExcerpt(post.content)}</p>
-              <p className={styles.authorInfo}>By {post.author_username}</p>
-            </div>
-          </Link>
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <Link href={`/blog/${post.slug}`} key={post.id} className={styles.postCard}>
+              <div className={styles.thumbnailWrapper}>
+                <Image
+                  src={post.cover_image ? post.cover_image : '/og-image.png'} // Use a robust fallback
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 250px"
+                  className={styles.thumbnail}
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              <div className={styles.cardContent}>
+                <h2 className={styles.postTitle}>{post.title}</h2>
+                <p className={styles.postExcerpt}>{createExcerpt(post.content)}</p>
+                <p className={styles.authorInfo}>By {post.author_username}</p>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p>No posts found.</p>
+        )}
       </main>
     </div>
   );
