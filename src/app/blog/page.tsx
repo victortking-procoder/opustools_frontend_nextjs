@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import styles from '../BlogStyles.module.css';
+import styles from '/BlogStyles.module.css';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
