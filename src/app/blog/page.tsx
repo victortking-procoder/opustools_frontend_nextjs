@@ -89,7 +89,7 @@ export default async function BlogPage() {
               <div className={styles.cardContent}>
                 <h2 className={styles.postTitle}>{post.title}</h2>
                 <p className={styles.postExcerpt}>{createExcerpt(post.content)}</p>
-                <p className={styles.authorInfo}>By {post.author_username}</p>
+                <p className={styles.authorInfo}>By Victor</p>
               </div>
             </Link>
           ))

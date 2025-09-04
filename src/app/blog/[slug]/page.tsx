@@ -95,7 +95,7 @@ export default async function PostPage({
       <article className={styles.postContainer}>
         <h1 className={styles.postDetailTitle}>{post.title}</h1>
         <p className={styles.postDetailMeta}>
-          By {post.author_username} on {postDate}
+          By Victor on {postDate}
         </p>
 
         {/* Cover Image */}
