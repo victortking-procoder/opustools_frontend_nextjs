@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import parse from 'html-react-parser';
 
 // Define the shape of a single Post
 interface Post {
@@ -17,23 +18,23 @@ interface Post {
   cover_image: string | null;
 }
 
-// This server-side function fetches a single post by its slug
+// Fetch a single post by slug
 async function getPost(slug: string): Promise<Post> {
   try {
     const response = await api.get(`/blog/posts/${slug}/`);
     return response.data;
   } catch (error) {
-    notFound(); // Triggers a 404 page if the post isn't found
+    notFound();
   }
 }
 
-// This function generates dynamic SEO metadata for each post
+// Generate SEO metadata for each post
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params; // ✅ await params
+  const { slug } = await params;
   const post = await getPost(slug);
   const excerpt = post.content.replace(/<[^>]+>/g, '').slice(0, 150);
 
@@ -48,13 +49,27 @@ export async function generateMetadata({
   };
 }
 
-// The main page component (Server Component)
+// Helper to make CKEditor images responsive
+function renderPostContent(html: string) {
+  return parse(html, {
+    replace: (domNode: any) => {
+      if (domNode?.name === 'img' && domNode.attribs?.src) {
+        // Ensure absolute URL if needed (optional)
+        const src = domNode.attribs.src;
+        domNode.attribs.style = (domNode.attribs.style || '') + 'max-width:100%;height:auto;margin:1rem 0;';
+        return domNode;
+      }
+    },
+  });
+}
+
+// Main page component
 export default async function PostPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params; // ✅ await params
+  const { slug } = await params;
   const post = await getPost(slug);
 
   const postDate = new Date(post.created_at).toLocaleDateString('en-US', {
@@ -83,6 +98,7 @@ export default async function PostPage({
           By {post.author_username} on {postDate}
         </p>
 
+        {/* Cover Image */}
         {post.cover_image && (
           <Image
             src={post.cover_image}
@@ -99,10 +115,10 @@ export default async function PostPage({
           />
         )}
 
-        <div
-          className={styles.postContent}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        {/* Post Content with responsive images */}
+        <div className={styles.postContent}>
+          {renderPostContent(post.content)}
+        </div>
       </article>
     </div>
   );
