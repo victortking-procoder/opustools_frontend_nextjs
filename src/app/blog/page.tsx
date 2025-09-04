@@ -1,10 +1,10 @@
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import styles from './BlogStyles.module.css';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import parse from 'html-react-parser';
 
 interface Post {
   id: number;
@@ -12,133 +12,109 @@ interface Post {
   slug: string;
   content: string;
   author_username: string;
-  created_at: string;
   cover_image: string | null;
 }
 
-async function getPost(slug: string): Promise<Post> {
-  try {
-    const response = await api.get(`/blog/posts/${slug}/`);
-    return response.data;
-  } catch {
-    notFound();
-  }
+interface PaginatedResponse {
+  results: Post[];
+  next: string | null;
+  previous: string | null;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const { slug } = params;
-  const post = await getPost(slug);
-  const excerpt = post.content.replace(/<[^>]+>/g, '').slice(0, 150);
+function createExcerpt(htmlContent: string, length = 150): string {
+  if (!htmlContent) return '';
+  const text = htmlContent.replace(/<[^>]+>/g, ''); // Strip HTML tags
+  return text.length <= length ? text : text.slice(0, length) + '...';
+}
 
-  return {
-    title: post.title,
-    description: excerpt,
-    alternates: {
-      canonical: `https://opustools.xyz/blog/${post.slug}`,
-    },
-    openGraph: {
-      title: post.title,
-      description: excerpt,
-      url: `https://opustools.xyz/blog/${post.slug}`,
-      images: post.cover_image ? [post.cover_image] : [],
-    },
+export default function BlogPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [nextPage, setNextPage] = useState<string | null>('/blog/posts/');
+  const [loading, setLoading] = useState(false);
+
+  const loadPosts = async (url: string) => {
+    if (!url) return;
+    setLoading(true);
+    try {
+      const response = await api.get<PaginatedResponse>(url);
+      setPosts((prev) => [...prev, ...response.data.results]);
+      setNextPage(response.data.next);
+    } catch (err) {
+      console.error('Failed to load posts:', err);
+    } finally {
+      setLoading(false);
+    }
   };
-}
 
-function renderPostContent(html: string) {
-  return parse(html, {
-    replace: (domNode: any) => {
-      if (domNode?.name === 'img' && domNode.attribs?.src) {
-        domNode.attribs.style = (domNode.attribs.style || '') + 'max-width:100%;height:auto;margin:1rem 0;';
-        domNode.attribs.loading = 'lazy';
-        return domNode;
-      }
-    },
-  });
-}
-
-export default async function PostPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-  const post = await getPost(slug);
-
-  const postDate = new Date(post.created_at).toISOString(); // ISO for schema
-  const postDateReadable = new Date(post.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  // ✅ JSON-LD structured data for single post
-  const articleJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    image: post.cover_image ? [post.cover_image] : ['https://opustools.xyz/og-image.png'],
-    datePublished: postDate,
-    author: {
-      '@type': 'Person',
-      name: 'Victor',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'OpusTools',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://opustools.xyz/logo.png',
-      },
-    },
-    description: post.content.replace(/<[^>]+>/g, '').slice(0, 150),
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://opustools.xyz/blog/${post.slug}`,
-    },
-  };
+  useEffect(() => {
+    if (nextPage) loadPosts(nextPage);
+  }, []);
 
   return (
     <div>
-      <Link
-        href="/blog"
-        style={{
-          color: '#9ca3af',
-          textDecoration: 'underline',
-          marginBottom: '2rem',
-          display: 'inline-block',
-        }}
-      >
-        &larr; Back to all posts
-      </Link>
-
-      <article className={styles.postContainer}>
-        <h1 className={styles.postDetailTitle}>{post.title}</h1>
-        <p className={styles.postDetailMeta}>
-          By 'Victor' on {postDateReadable}
+      <header className={styles.pageHeader}>
+        <h1 className={styles.title}>The OpusTools Blog</h1>
+        <p className={styles.subtitle}>
+          Tutorials, articles, and updates on our suite of free file processing tools.
         </p>
+      </header>
 
-        {post.cover_image && (
-          <Image
-            src={post.cover_image}
-            alt={post.title}
-            width={800}
-            height={450}
-            style={{
-              width: '100%',
-              height: 'auto',
-              borderRadius: '0.5rem',
-              marginBottom: '2rem',
-            }}
-            priority
-          />
+      <main className={styles.postsGrid}>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <Link href={`/blog/${post.slug}`} key={post.id} className={styles.postCard}>
+              <div className={styles.thumbnailWrapper}>
+                {post.cover_image ? (
+                  <Image
+                    src={post.cover_image}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 250px"
+                    className={styles.thumbnail}
+                    style={{ objectFit: 'cover' }}
+                  />
+                ) : (
+                  <Image
+                    src="/og-image.png"
+                    alt="Default thumbnail"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 250px"
+                    className={styles.thumbnail}
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
+              </div>
+              <div className={styles.cardContent}>
+                <h2 className={styles.postTitle}>{post.title}</h2>
+                <p className={styles.postExcerpt}>{createExcerpt(post.content)}</p>
+                <p className={styles.authorInfo}>By Victor</p>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p>No posts found.</p>
         )}
+      </main>
 
-        <div className={styles.postContent}>
-          {renderPostContent(post.content)}
+      {nextPage && (
+        <div style={{ textAlign: 'center', margin: '2rem 0' }}>
+          <button
+            onClick={() => loadPosts(nextPage)}
+            disabled={loading}
+            style={{
+              padding: '0.75rem 1.5rem',
+              fontSize: '1rem',
+              backgroundColor: '#3b82f6',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+            }}
+          >
+            {loading ? 'Loading...' : 'Load More'}
+          </button>
         </div>
-      </article>
-
-      {/* ✅ Inject JSON-LD */}
-      <script type="application/ld+json">
-        {JSON.stringify(articleJsonLd)}
-      </script>
+      )}
     </div>
   );
 }

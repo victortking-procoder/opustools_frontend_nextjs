@@ -1,4 +1,3 @@
-// src/app/blog/[slug]/page.tsx
 import api from '@/lib/api';
 import styles from '../BlogStyles.module.css';
 import { Metadata } from 'next';
@@ -7,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import parse from 'html-react-parser';
 
-// Define the shape of a single Post
 interface Post {
   id: number;
   title: string;
@@ -18,65 +16,83 @@ interface Post {
   cover_image: string | null;
 }
 
-// Fetch a single post by slug
 async function getPost(slug: string): Promise<Post> {
   try {
     const response = await api.get(`/blog/posts/${slug}/`);
     return response.data;
-  } catch (error) {
+  } catch {
     notFound();
   }
 }
 
-// Generate SEO metadata for each post
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const { slug } = params;
   const post = await getPost(slug);
   const excerpt = post.content.replace(/<[^>]+>/g, '').slice(0, 150);
 
   return {
     title: post.title,
     description: excerpt,
+    alternates: {
+      canonical: `https://opustools.xyz/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: excerpt,
+      url: `https://opustools.xyz/blog/${post.slug}`,
       images: post.cover_image ? [post.cover_image] : [],
     },
   };
 }
 
-// Helper to make CKEditor images responsive
 function renderPostContent(html: string) {
   return parse(html, {
     replace: (domNode: any) => {
       if (domNode?.name === 'img' && domNode.attribs?.src) {
-        // Ensure absolute URL if needed (optional)
-        const src = domNode.attribs.src;
-        domNode.attribs.style = (domNode.attribs.style || '') + 'max-width:100%;height:auto;margin:1rem 0;';
+        domNode.attribs.style =
+          (domNode.attribs.style || '') + 'max-width:100%;height:auto;margin:1rem 0;';
+        domNode.attribs.loading = 'lazy';
         return domNode;
       }
     },
   });
 }
 
-// Main page component
-export default async function PostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+export default async function PostPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const post = await getPost(slug);
 
-  const postDate = new Date(post.created_at).toLocaleDateString('en-US', {
+  const postDate = new Date(post.created_at).toISOString();
+  const postDateReadable = new Date(post.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    image: post.cover_image ? [post.cover_image] : ['https://opustools.xyz/og-image.png'],
+    datePublished: postDate,
+    author: {
+      '@type': 'Person',
+      name: 'Victor',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'OpusTools',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://opustools.xyz/logo.png',
+      },
+    },
+    description: post.content.replace(/<[^>]+>/g, '').slice(0, 150),
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://opustools.xyz/blog/${post.slug}`,
+    },
+  };
 
   return (
     <div>
@@ -94,11 +110,8 @@ export default async function PostPage({
 
       <article className={styles.postContainer}>
         <h1 className={styles.postDetailTitle}>{post.title}</h1>
-        <p className={styles.postDetailMeta}>
-          By Victor on {postDate}
-        </p>
+        <p className={styles.postDetailMeta}>By Victor on {postDateReadable}</p>
 
-        {/* Cover Image */}
         {post.cover_image && (
           <Image
             src={post.cover_image}
@@ -115,11 +128,10 @@ export default async function PostPage({
           />
         )}
 
-        {/* Post Content with responsive images */}
-        <div className={styles.postContent}>
-          {renderPostContent(post.content)}
-        </div>
+        <div className={styles.postContent}>{renderPostContent(post.content)}</div>
       </article>
+
+      <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
     </div>
   );
 }
