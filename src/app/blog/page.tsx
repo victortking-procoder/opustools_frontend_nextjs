@@ -30,11 +30,10 @@ interface PaginatedResponse {
 async function getPosts(): Promise<Post[]> {
   try {
     const response = await api.get<PaginatedResponse>('/blog/posts/');
-    // Correctly access the 'results' array from the paginated response
     return response.data.results || [];
   } catch (error) {
     console.error('Failed to fetch posts:', error);
-    return []; // Return an empty array on error to prevent crashes
+    return [];
   }
 }
 
@@ -42,8 +41,7 @@ async function getPosts(): Promise<Post[]> {
 function createExcerpt(htmlContent: string, length = 150): string {
   if (!htmlContent) return '';
   const text = htmlContent.replace(/<[^>]+>/g, ''); // Strip HTML tags
-  if (text.length <= length) return text;
-  return text.slice(0, length) + '...';
+  return text.length <= length ? text : text.slice(0, length) + '...';
 }
 
 // The main page component (Server Component)
@@ -62,16 +60,31 @@ export default async function BlogPage() {
       <main className={styles.postsGrid}>
         {posts.length > 0 ? (
           posts.map((post) => (
-            <Link href={`/blog/${post.slug}`} key={post.id} className={styles.postCard}>
+            <Link
+              href={`/blog/${post.slug}`}
+              key={post.id}
+              className={styles.postCard}
+            >
               <div className={styles.thumbnailWrapper}>
-                <Image
-                  src={post.cover_image ? post.cover_image : '/og-image.png'} // Use a robust fallback
-                  alt={post.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 250px"
-                  className={styles.thumbnail}
-                  style={{ objectFit: 'cover' }}
-                />
+                {post.cover_image ? (
+                  <Image
+                    src={post.cover_image}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 250px"
+                    className={styles.thumbnail}
+                    style={{ objectFit: 'cover' }}
+                  />
+                ) : (
+                  <Image
+                    src="/og-image.png" // fallback
+                    alt="Default thumbnail"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 250px"
+                    className={styles.thumbnail}
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
               </div>
               <div className={styles.cardContent}>
                 <h2 className={styles.postTitle}>{post.title}</h2>
