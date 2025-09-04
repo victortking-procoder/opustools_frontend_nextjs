@@ -28,9 +28,15 @@ async function getPost(slug: string): Promise<Post> {
 }
 
 // This function generates dynamic SEO metadata for each post
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = await getPost(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params; // ✅ await params
+  const post = await getPost(slug);
   const excerpt = post.content.replace(/<[^>]+>/g, '').slice(0, 150);
+
   return {
     title: post.title,
     description: excerpt,
@@ -38,13 +44,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: post.title,
       description: excerpt,
       images: post.cover_image ? [post.cover_image] : [],
-    }
+    },
   };
 }
 
 // The main page component (Server Component)
-export default async function PostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params; // ✅ await params
+  const post = await getPost(slug);
+
   const postDate = new Date(post.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -53,9 +65,18 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   return (
     <div>
-      <Link href="/blog" style={{ color: '#9ca3af', textDecoration: 'underline', marginBottom: '2rem', display: 'inline-block' }}>
+      <Link
+        href="/blog"
+        style={{
+          color: '#9ca3af',
+          textDecoration: 'underline',
+          marginBottom: '2rem',
+          display: 'inline-block',
+        }}
+      >
         &larr; Back to all posts
       </Link>
+
       <article className={styles.postContainer}>
         <h1 className={styles.postDetailTitle}>{post.title}</h1>
         <p className={styles.postDetailMeta}>
@@ -68,7 +89,12 @@ export default async function PostPage({ params }: { params: { slug: string } })
             alt={post.title}
             width={800}
             height={450}
-            style={{ width: '100%', height: 'auto', borderRadius: '0.5rem', marginBottom: '2rem' }}
+            style={{
+              width: '100%',
+              height: 'auto',
+              borderRadius: '0.5rem',
+              marginBottom: '2rem',
+            }}
             priority
           />
         )}
