@@ -11,6 +11,7 @@ interface Post {
   title: string;
   slug: string;
   content: string;
+  excerpt?: string;
   author_username: string;
   created_at: string;
   cover_image: string | null;
@@ -28,7 +29,10 @@ async function getPost(slug: string): Promise<Post> {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { slug } = params;
   const post = await getPost(slug);
-  const excerpt = post.content.replace(/<[^>]+>/g, '').slice(0, 150);
+
+  const excerpt =
+    post.excerpt?.trim() ||
+    post.content.replace(/<[^>]+>/g, '').slice(0, 150);
 
   return {
     title: post.title,
@@ -37,10 +41,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       canonical: `https://opustools.xyz/blog/${post.slug}`,
     },
     openGraph: {
+      type: 'article',
       title: post.title,
       description: excerpt,
       url: `https://opustools.xyz/blog/${post.slug}`,
       images: post.cover_image ? [post.cover_image] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: excerpt,
+      images: post.cover_image ? [post.cover_image] : ['https://opustools.xyz/og-image.png'],
     },
   };
 }
@@ -69,6 +80,10 @@ export default async function PostPage({ params }: { params: { slug: string } })
     day: 'numeric',
   });
 
+  const excerpt =
+    post.excerpt?.trim() ||
+    post.content.replace(/<[^>]+>/g, '').slice(0, 150);
+
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -87,7 +102,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
         url: 'https://opustools.xyz/logo.png',
       },
     },
-    description: post.content.replace(/<[^>]+>/g, '').slice(0, 150),
+    description: excerpt,
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `https://opustools.xyz/blog/${post.slug}`,
