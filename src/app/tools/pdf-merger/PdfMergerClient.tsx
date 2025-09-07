@@ -10,6 +10,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
@@ -50,7 +51,13 @@ function SortableFileItem({ id, file, onRemove }: { id: string, file: File, onRe
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={styles.fileItem}>
       <p>{file.name}</p>
       {/* Stop propagation to prevent drag from firing on button click */}
-      <button onPointerDown={(e) => e.stopPropagation()} onClick={() => onRemove(file)} className={styles.removeButton}>&times;</button>
+      <button
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={() => onRemove(file)}
+        className={styles.removeButton}
+      >
+        &times;
+      </button>
     </div>
   );
 }
@@ -62,7 +69,9 @@ export default function PdfMergerClient() {
   const [error, setError] = useState<string | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newFiles = acceptedFiles.filter(newFile => !files.some(existingFile => existingFile.name === newFile.name));
+    const newFiles = acceptedFiles.filter(
+      newFile => !files.some(existingFile => existingFile.name === newFile.name)
+    );
     setFiles(currentFiles => [...currentFiles, ...newFiles]);
     setJobId(null);
     setJobStatus(null);
@@ -79,8 +88,20 @@ export default function PdfMergerClient() {
     setFiles(files.filter(file => file.name !== fileToRemove.name));
   };
 
+  // ✅ Improved sensors for desktop + mobile
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 150, // wait a bit before starting drag
+        tolerance: 5, // must move slightly before drag starts
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -136,22 +157,26 @@ export default function PdfMergerClient() {
       });
       setJobId(response.data.id);
     } catch (err: any) {
-        if (err.response?.data?.code === 'conversion_limit_exceeded') {
-            setError('You have reached your daily limit for conversions.');
-        } else {
-            setError(err.response?.data?.detail || 'File upload failed.');
-        }
-        setJobStatus(null);
+      if (err.response?.data?.code === 'conversion_limit_exceeded') {
+        setError('You have reached your daily limit for conversions.');
+      } else {
+        setError(err.response?.data?.detail || 'File upload failed.');
+      }
+      setJobStatus(null);
     }
   };
 
   const getStatusMessage = () => {
     if (!jobStatus) return null;
     switch (jobStatus.status) {
-      case 'PROCESSING': return <div className={`${styles.statusBar} ${styles.statusProcessing}`}>Merging PDFs... Please wait.</div>;
-      case 'COMPLETED': return <div className={`${styles.statusBar} ${styles.statusCompleted}`}>Merge successful!</div>;
-      case 'FAILED': return <div className={`${styles.statusBar} ${styles.statusError}`}>Error: {jobStatus.error_message || 'An unknown error occurred.'}</div>;
-      default: return null;
+      case 'PROCESSING':
+        return <div className={`${styles.statusBar} ${styles.statusProcessing}`}>Merging PDFs... Please wait.</div>;
+      case 'COMPLETED':
+        return <div className={`${styles.statusBar} ${styles.statusCompleted}`}>Merge successful!</div>;
+      case 'FAILED':
+        return <div className={`${styles.statusBar} ${styles.statusError}`}>Error: {jobStatus.error_message || 'An unknown error occurred.'}</div>;
+      default:
+        return null;
     }
   };
 
@@ -160,7 +185,16 @@ export default function PdfMergerClient() {
       <h1 className={styles.title}>PDF Merger</h1>
       <p className={styles.description}>Combine multiple PDF files into one. Drag and drop files to change their order.</p>
 
-      <div {...getRootProps()} style={{ border: '2px dashed #2c2b4f', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '0.5rem' }}>
+      <div
+        {...getRootProps()}
+        style={{
+          border: '2px dashed #2c2b4f',
+          padding: '2rem',
+          textAlign: 'center',
+          cursor: 'pointer',
+          borderRadius: '0.5rem',
+        }}
+      >
         <input {...getInputProps()} />
         <p>{isDragActive ? "Drop the files here..." : "Drag 'n' drop PDF files here, or click to select"}</p>
       </div>
@@ -177,7 +211,11 @@ export default function PdfMergerClient() {
             </SortableContext>
           </DndContext>
 
-          <button onClick={handleSubmit} disabled={jobStatus?.status === 'PROCESSING' || files.length < 2} className={styles.submitButton}>
+          <button
+            onClick={handleSubmit}
+            disabled={jobStatus?.status === 'PROCESSING' || files.length < 2}
+            className={styles.submitButton}
+          >
             {jobStatus?.status === 'PROCESSING' ? 'Merging...' : 'Merge PDFs'}
           </button>
         </>
@@ -186,7 +224,10 @@ export default function PdfMergerClient() {
       {getStatusMessage()}
 
       {jobStatus?.status === 'COMPLETED' && jobStatus.id && (
-        <a href={`https://api.opustools.xyz/api/pdf/jobs/${jobStatus.id}/download/`} className={styles.downloadButton}>
+        <a
+          href={`https://api.opustools.xyz/api/pdf/jobs/${jobStatus.id}/download/`}
+          className={styles.downloadButton}
+        >
           Download Merged PDF
         </a>
       )}
@@ -195,7 +236,15 @@ export default function PdfMergerClient() {
         <div className={`${styles.statusBar} ${styles.statusError}`}>
           {error}
           {error.includes('daily limit') && (
-            <Link href="/register" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline', marginLeft: '0.5rem' }}>
+            <Link
+              href="/register"
+              style={{
+                color: '#ffffff',
+                fontWeight: 'bold',
+                textDecoration: 'underline',
+                marginLeft: '0.5rem',
+              }}
+            >
               Sign Up for Unlimited Access
             </Link>
           )}
