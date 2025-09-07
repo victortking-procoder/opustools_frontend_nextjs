@@ -10,6 +10,7 @@ interface Post {
   id: number;
   title: string;
   slug: string;
+  excerpt?: string;
   content: string;
   author_username: string;
   cover_image: string | null;
@@ -61,36 +62,45 @@ export default function BlogPage() {
 
       <main className={styles.postsGrid}>
         {posts.length > 0 ? (
-          posts.map((post) => (
-            <Link href={`/blog/${post.slug}`} key={post.id} className={styles.postCard}>
-              <div className={styles.thumbnailWrapper}>
-                {post.cover_image ? (
-                  <Image
-                    src={post.cover_image}
-                    alt={post.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 250px"
-                    className={styles.thumbnail}
-                    style={{ objectFit: 'cover' }}
-                  />
-                ) : (
-                  <Image
-                    src="/og-image.png"
-                    alt="Default thumbnail"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 250px"
-                    className={styles.thumbnail}
-                    style={{ objectFit: 'cover' }}
-                  />
-                )}
-              </div>
-              <div className={styles.cardContent}>
-                <h2 className={styles.postTitle}>{post.title}</h2>
-                <p className={styles.postExcerpt}>{createExcerpt(post.content)}</p>
-                <p className={styles.authorInfo}>By Victor</p>
-              </div>
-            </Link>
-          ))
+          posts.map((post) => {
+            const excerpt =
+              post.excerpt?.trim() || createExcerpt(post.content);
+
+            return (
+              <Link
+                href={`/blog/${post.slug}`}
+                key={post.id}
+                className={styles.postCard}
+              >
+                <div className={styles.thumbnailWrapper}>
+                  {post.cover_image ? (
+                    <Image
+                      src={post.cover_image}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 250px"
+                      className={styles.thumbnail}
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <Image
+                      src="/og-image.png"
+                      alt="Default thumbnail"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 250px"
+                      className={styles.thumbnail}
+                      style={{ objectFit: 'cover' }}
+                    />
+                  )}
+                </div>
+                <div className={styles.cardContent}>
+                  <h2 className={styles.postTitle}>{post.title}</h2>
+                  <p className={styles.postExcerpt}>{excerpt}</p>
+                  <p className={styles.authorInfo}>By Victor</p>
+                </div>
+              </Link>
+            );
+          })
         ) : (
           <p>No posts found.</p>
         )}
