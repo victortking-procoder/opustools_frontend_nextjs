@@ -32,7 +32,7 @@ interface JobStatus {
   error_message: string | null;
 }
 
-// A new, separate component for each sortable file item
+// ✅ Sortable file item
 function SortableFileItem({ id, file, onRemove }: { id: string, file: File, onRemove: (file: File) => void }) {
   const {
     attributes,
@@ -45,10 +45,17 @@ function SortableFileItem({ id, file, onRemove }: { id: string, file: File, onRe
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    touchAction: 'none', // ✅ Prevent scroll vs drag conflict
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={styles.fileItem}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={styles.fileItem}
+    >
       <p>{file.name}</p>
       {/* Stop propagation to prevent drag from firing on button click */}
       <button
@@ -68,15 +75,18 @@ export default function PdfMergerClient() {
   const [jobStatus, setJobStatus] = useState<JobStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newFiles = acceptedFiles.filter(
-      newFile => !files.some(existingFile => existingFile.name === newFile.name)
-    );
-    setFiles(currentFiles => [...currentFiles, ...newFiles]);
-    setJobId(null);
-    setJobStatus(null);
-    setError(null);
-  }, [files]);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const newFiles = acceptedFiles.filter(
+        newFile => !files.some(existingFile => existingFile.name === newFile.name)
+      );
+      setFiles(currentFiles => [...currentFiles, ...newFiles]);
+      setJobId(null);
+      setJobStatus(null);
+      setError(null);
+    },
+    [files]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -88,18 +98,13 @@ export default function PdfMergerClient() {
     setFiles(files.filter(file => file.name !== fileToRemove.name));
   };
 
-  // ✅ Improved sensors for desktop + mobile
+  // ✅ Sensors (Desktop + Mobile + Keyboard)
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        delay: 150, // wait a bit before starting drag
-        tolerance: 5, // must move slightly before drag starts
-      },
-    }),
+    useSensor(PointerSensor),
     useSensor(TouchSensor, {
+      // Require a small movement before activating drag (better UX on mobile)
       activationConstraint: {
-        delay: 150,
-        tolerance: 5,
+        distance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -183,7 +188,9 @@ export default function PdfMergerClient() {
   return (
     <div className={styles.toolContainer}>
       <h1 className={styles.title}>PDF Merger</h1>
-      <p className={styles.description}>Combine multiple PDF files into one. Drag and drop files to change their order.</p>
+      <p className={styles.description}>
+        Combine multiple PDF files into one. Drag and drop files to change their order.
+      </p>
 
       <div
         {...getRootProps()}
@@ -238,12 +245,7 @@ export default function PdfMergerClient() {
           {error.includes('daily limit') && (
             <Link
               href="/register"
-              style={{
-                color: '#ffffff',
-                fontWeight: 'bold',
-                textDecoration: 'underline',
-                marginLeft: '0.5rem',
-              }}
+              style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline', marginLeft: '0.5rem' }}
             >
               Sign Up for Unlimited Access
             </Link>

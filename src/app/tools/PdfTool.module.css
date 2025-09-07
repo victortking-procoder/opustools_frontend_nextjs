@@ -41,6 +41,10 @@
   margin-bottom: 0.5rem;
   cursor: grab;
   border: 1px solid #2c2b4f;
+
+  touch-action: none;       /* Prevents scrolling instead of dragging */
+  -webkit-user-drag: none;  /* Prevents Safari from treating it as draggable image */
+  user-select: none;
 }
 
 .fileItem p {
