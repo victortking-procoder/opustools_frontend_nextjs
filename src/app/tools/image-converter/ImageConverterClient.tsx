@@ -114,7 +114,7 @@ export default function ImageConverterClient() {
 
   return (
     <div className={styles.toolContainer}>
-      <h1 className={styles.title}>convert image to jpg 20kb</h1>
+      <h1 className={styles.title}>Convert Image to jpg 20kb</h1>
       <p className={styles.description}>Welcome to the ultimate solution for your image conversion needs. Whether you need to <strong>convert image to jpg 20kb</strong> for a web submission or perform a high-quality <strong>tiff to jpg</strong> conversion for your portfolio, our tool handles it all. Simply upload your file, choose your desired format, and let us do the rest. It&apos;s fast, free, and secure..</p>
       
       {!file ? (

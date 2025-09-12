@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import api from '@/lib/api';
 import styles from '../ImageTool.module.css';
+import { StyleRegistry } from 'styled-jsx';
 
 interface JobStatus {
   id: string;
@@ -121,8 +122,8 @@ export default function ImageCompressorClient() {
 
   return (
     <div className={styles.toolContainer}>
-      <h1 className={styles.title}>Image Compressor</h1>
-      <p className={styles.description}>Reduce the file size of your images without compromising quality.</p>
+      <h1 className={styles.title}>Compress Image to 50kb</h1>
+      <p className={styles.description}>Large image files can slow down your website and take up unnecessary storage. This guide will show you <strong>how to reduce jpg file size</strong> effectively. With our tool, you can easily <strong>compress image to 50kb</strong> for a blog post or <strong>compress jpeg to 200kb</strong> for a high-quality banner, all while maintaining the best possible quality.</p>
       
       {!file ? (
         <div {...getRootProps()} style={{ border: '2px dashed #2c2b4f', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '0.5rem' }}>
@@ -187,16 +188,24 @@ export default function ImageCompressorClient() {
       )}
 
       <div className={styles.seoContent}>
-        <h2 className={styles.seoTitle}>Optimize Your Images for the Web</h2>
+        <h2 className={styles.seoTitle}>How to Reduce File Size of JPG: A Step-by-Step Guide</h2>
         <p>
-            Large image files can significantly slow down your website's loading speed, impacting user experience and search engine rankings. Our Image Compressor uses advanced algorithms to reduce the file size of your JPG, PNG, and WebP images to the smallest possible size while maintaining excellent visual quality.
+            If you&apos;re asking, &quot;<strong>how do i decrease the file size of a jpeg</strong>?&quot;, you&apos;re in the right place. Our tool simplifies this process.
         </p>
-        <h3 className={styles.seoSubtitle}>Why Compress Images?</h3>
-        <ul>
-            <li><strong>Faster Website Speed:</strong> Improve your PageSpeed Insights score.</li>
-            <li><strong>Better SEO:</strong> Search engines prefer fast-loading websites.</li>
-            <li><strong>Save Storage and Bandwidth:</strong> Reduce hosting costs.</li>
-        </ul>
+        <ol>
+          <li><strong>Upload Your Image:</strong> Drag and drop your JPG or PNG file into the upload area.</li>
+          <li><strong>Adjust the Quality Slider:</strong> A lower quality setting results in a smaller file size. Our real-time preview shows you the output size, so you can stop exactly when you need to.</li>
+          <li><strong>Download:</strong> Once you&apos;re happy with the size, hit the compress button and download your optimized image. This is the easiest way to learn <strong>how to reduce jpg file size</strong> without complex software.</li>
+        </ol>
+        <h2 className={styles.seoTitle}>Achieving Specific File Sizes for Any Application</h2>
+        <h3 className={styles.seoSubtitle}>How to <strong>compress image to 20kb</strong> and <strong>compress image to 50kb</strong></h3>
+        <p>
+          For many web applications, email attachments, and online forms, a small file size is mandatory. Compressing an image to 20kb or 50kb is ideal for profile pictures, thumbnails, and icons. Our algorithm is finely tuned to reach these small file sizes while preserving as much clarity as possible.
+        </p>
+        <h3 className={styles.seoSubtitle}>How to <strong>compress jpeg to 100kb</strong> and <strong>compress jpeg to 200kb</strong></h3>
+        <p>
+          When quality is more important, but you still need a smaller file, aiming for 100kb or 200kb is a great strategy. This is perfect for blog post images, product photos, and website hero images where you need sharpness and detail without the performance cost of a multi-megabyte file.
+        </p>
       </div>
     </div>
   );
