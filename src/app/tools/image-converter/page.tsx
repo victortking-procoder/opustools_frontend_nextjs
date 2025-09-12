@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import ImageConverterClient from './ImageConverterClient'; // Import the new client component
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Free Online Image Converter - Convert PNG, JPG, WEBP, GIF, BMP & TIFF";
-  const description = "Easily convert images online for free. Change PNG to JPG, JPG to PNG, or convert to WEBP, GIF, BMP, and TIFF. Fast, secure, and optimized for web, social media, and e-commerce use.";
+  const title = "Convert Image to JPG 20kb - Free Image Converter";
+  const description = "Need an image to jpg converter 20kb? Our tool can convert your images to JPG, PNG, WEBP, and more, while helping you meet specific size requirements. We also handle large formats, acting as a 3000x3000 image converter, and specialized conversions like tiff to jpg.";
   const url = "/tools/image-converter";
 
   return {
