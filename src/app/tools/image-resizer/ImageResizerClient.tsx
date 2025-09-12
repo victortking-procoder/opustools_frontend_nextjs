@@ -201,6 +201,15 @@ export default function ImageResizerClient() {
         <p>
           For larger web graphics, like website banners or portfolio hero images, you need more detail. Our tool functions as an <strong>image resizer 200kb</strong> and can even handle requests to <strong>resize image to 500kb</strong>. This allows you to maintain excellent quality while still benefiting from significant file size reduction compared to the original.
         </p>
+        <div className={styles.relatedLinks}>
+          <h2>Related Tools & Guides</h2>
+          <p>After resizing, you may need to compress your image or convert it to a more web-friendly format. We have the tools and guides to help.</p>
+          <ul>
+            <li><Link href="/tools/image-compressor">Image Compressor</Link> - Make your resized image even smaller.</li>
+            <li><Link href="/tools/image-converter">Image Converter</Link> - Change your image to JPG, PNG, and more.</li>
+            <li><a href="https://opustools.xyz/blog/the-ultimate-image-resizer-guide-resizing-images-to-20kb-50kb-and-beyond" target="_blank" rel="noopener noreferrer">Read our complete guide on Mastering Image Resizing</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   );

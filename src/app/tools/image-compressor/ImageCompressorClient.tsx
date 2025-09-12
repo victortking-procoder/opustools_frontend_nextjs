@@ -206,6 +206,15 @@ export default function ImageCompressorClient() {
         <p>
           When quality is more important, but you still need a smaller file, aiming for 100kb or 200kb is a great strategy. This is perfect for blog post images, product photos, and website hero images where you need sharpness and detail without the performance cost of a multi-megabyte file.
         </p>
+        <div className={styles.relatedLinks}>
+          <h2>Related Tools & Guides</h2>
+          <p>Compression is key, but sometimes you need to change the format or size first. Explore our other tools and guides to perfect your images.</p>
+          <ul>
+            <li><Link href="/tools/image-converter">Image Converter</Link> - Need a different format like PNG or WEBP?</li>
+            <li><Link href="/tools/image-resizer">Image Resizer</Link> - Adjust the width and height of your image.</li>
+            <li><a href="https://opustools.xyz/blog/how-to-reduce-jpg-file-size-your-guide-to-compressing-images-to-20kb-50kb-or-100kb" target="_blank" rel="noopener noreferrer">Read our in-depth guide on Image Compression</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   );
