@@ -203,6 +203,15 @@ export default function ImageConverterClient() {
             <dt>What&apos;s the main benefit of a <strong>tiff to jpg</strong> conversion?</dt>
             <dd>The primary benefit is file size reduction. TIFFs are excellent for quality but are too large for web use. Converting to JPG makes them universally compatible and much smaller, making your website or portfolio load faster for visitors.</dd>
           </dl>
+          <div className={styles.relatedLinks}>
+          <h2>Related Tools & Guides</h2>
+          <p>Once your image is converted, you might need to optimize it further. Learn more from our guides or try another one of our free tools.</p>
+          <ul>
+            <li><Link href="/tools/image-compressor">Image Compressor</Link> - Reduce the file size of your new image.</li>
+            <li><Link href="/tools/image-resizer">Image Resizer</Link> - Change the dimensions of your image.</li>
+            <li><a href="https://opustools.xyz/blog/the-ultimate-guide-to-image-conversion-from-tiff-to-a-20kb-jpg" target="_blank" rel="noopener noreferrer">Read our full guide on Image Conversion</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   );
