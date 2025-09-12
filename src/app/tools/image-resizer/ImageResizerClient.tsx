@@ -115,8 +115,8 @@ export default function ImageResizerClient() {
 
   return (
     <div className={styles.toolContainer}>
-      <h1 className={styles.title}>Image Resizer</h1>
-      <p className={styles.description}>Change image dimensions by specifying a new width or height.</p>
+      <h1 className={styles.title}>Resize Image to 30kb</h1>
+      <p className={styles.description}>Resizing an image isn&apos;t just about changing its dimensions; it&apos;s also about meeting specific file size requirements. With our tool, you can use the <strong>image resizer 20kb</strong> function for avatars, or <strong>resize image to 500kb</strong> for high-resolution banners. We provide the flexibility to control both pixel dimensions and file size</p>
       
       {!file ? (
         <div {...getRootProps()} style={{ border: '2px dashed #2c2b4f', padding: '2rem', textAlign: 'center', cursor: 'pointer', borderRadius: '0.5rem' }}>
@@ -188,16 +188,19 @@ export default function ImageResizerClient() {
       )}
       
       <div className={styles.seoContent}>
-        <h2 className={styles.seoTitle}>Easily Resize Images for Any Platform</h2>
+        <h2 className={styles.seoTitle}>Your Go-To Resizer for Every File Size</h2>
+        <h3 className={styles.seoSubtitle}>Small Sizes: Use the <strong>image resizer 20kb</strong> and <strong>resize image to 30kb</strong></h3>
         <p>
-          Whether you're preparing images for a social media post, a blog, or an online store, our Image Resizer makes it simple to get the exact dimensions you need. By resizing your images, you ensure they load quickly and display perfectly on any device.
+          When you need a tiny image for a forum signature, an icon, or a specific online portal, our tool is the perfect <strong>image resizer 20kb</strong>. It intelligently reduces the image dimensions and applies light compression to help you hit that target. The same process applies when you need to <strong>resize image to 30kb</strong>.
         </p>
-        <h3 className={styles.seoSubtitle}>Common Use Cases</h3>
-        <ul>
-          <li><strong>Social Media:</strong> Get the perfect size for Instagram posts, Twitter headers, or Facebook banners.</li>
-          <li><strong>Web Development:</strong> Create perfectly sized images for hero sections, thumbnails, and galleries.</li>
-          <li><strong>E-commerce:</strong> Optimize product images for fast loading and a professional look.</li>
-        </ul>
+        <h3 className={styles.seoSubtitle}>Medium Sizes: The Perfect <strong>image resizer in 50 kb</strong> and how to <strong>resize image 100kb</strong></h3>
+        <p>
+          For blog content, email newsletters, and product thumbnails, a balance between quality and size is key. Our <strong>image resize to 50 kb</strong> capability ensures your images are crisp and load quickly. If you need a bit more detail, the option to <strong>resize image 100kb</strong> is perfect for featured images.
+        </p>
+        <h2 className={styles.seoTitle}>Resizing for High-Resolution and Banners</h2>
+        <p>
+          For larger web graphics, like website banners or portfolio hero images, you need more detail. Our tool functions as an <strong>image resizer 200kb</strong> and can even handle requests to <strong>resize image to 500kb</strong>. This allows you to maintain excellent quality while still benefiting from significant file size reduction compared to the original.
+        </p>
       </div>
     </div>
   );
