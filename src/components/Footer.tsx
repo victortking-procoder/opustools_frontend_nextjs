@@ -21,6 +21,7 @@ const Footer = () => {
         <p>Featured.</p>
         <div className={styles.footerLink}>
           <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></img></a>
+          <a href="https://startupfa.me/s/opustools?utm_source=opustools.xyz" target="_blank"><img src="https://startupfa.me/badges/featured-badge.webp" alt="Featured on Startup Fame" width="171" height="54" /></a>
         </div>
       </div>
     </footer>
