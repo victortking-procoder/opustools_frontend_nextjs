@@ -18,14 +18,14 @@
   gap: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 .footerLink {
   color: #9ca3af;
   text-decoration: none;
   transition: color 0.2s;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .footerLink:hover {
