@@ -20,12 +20,11 @@
   margin-bottom: 1rem;
 }
 
-.footerLink {
+.footerLink a {
   color: #9ca3af;
   text-decoration: none;
   transition: color 0.2s;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin: 20px;
 }
 
 .footerLink:hover {

@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
         <p>Featured.</p>
         <div className={styles.footerLink}>
-          <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></img></a>
+          <a href="https://twelve.tools" target="_blank" ><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></img></a>
           <a href="https://startupfa.me/s/opustools?utm_source=opustools.xyz" target="_blank"><img src="https://startupfa.me/badges/featured-badge.webp" alt="Featured on Startup Fame" width="171" height="54" /></a>
           <a href="https://fazier.com" target="_blank"><img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=featured&theme=dark" width="250" alt="Fazier badge" /></a>
         </div>
