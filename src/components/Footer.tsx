@@ -18,6 +18,10 @@ const Footer = () => {
             support@opustools.xyz
           </a>
         </div>
+        <p>Featured.</p>
+        <div className={styles.footerLink}>
+          <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></img></a>
+        </div>
       </div>
     </footer>
   );
