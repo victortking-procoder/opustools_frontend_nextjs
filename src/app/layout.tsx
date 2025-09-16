@@ -20,6 +20,10 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
   },
   metadataBase: new URL("https://opustools.xyz"),
+
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "OpusTools | Free & Secure Online File Conversion Tools",
     description: "A complete suite of free online tools to compress, convert, and edit your images and PDF documents.",
