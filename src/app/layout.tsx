@@ -69,9 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {process.env.NODE_ENV === "production" && (
-          <GoogleAnalytics />
-        )}
+        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
