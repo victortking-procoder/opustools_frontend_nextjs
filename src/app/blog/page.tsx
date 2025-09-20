@@ -5,6 +5,15 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import styles from './BlogStyles.module.css';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'OpusTools Blog | Tutorials & Updates',
+  description: 'Guides, tutorials, and news from OpusTools.',
+  alternates: {
+    canonical: 'https://opustools.xyz/blog',
+  },
+};
 
 interface Post {
   id: number;

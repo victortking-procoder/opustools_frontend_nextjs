@@ -1,5 +1,14 @@
 // src/app/privacy/page.tsx
 import styles from '../legal.module.css';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | OpusTools',
+  description: 'Learn how OpusTools handles your data securely.',
+  alternates: {
+    canonical: 'https://opustools.xyz/privacy',
+  },
+};
 
 export default function PrivacyPage() {
   return (

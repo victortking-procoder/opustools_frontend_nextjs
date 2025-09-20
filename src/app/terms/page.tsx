@@ -1,5 +1,14 @@
 // src/app/terms/page.tsx
 import styles from '../legal.module.css';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | OpusTools',
+  description: 'Read the Terms of Service for using OpusTools.',
+  alternates: {
+    canonical: 'https://opustools.xyz/terms',
+  },
+};
 
 export default function TermsPage() {
   return (
