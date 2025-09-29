@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import PdfCompressorClient from './PdfCompressorClient'; // Import the new client component
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Free PDF Compressor - Reduce File Size Online | OpusTools";
+  const title = "Free PDF Compressor - Reduce File Size Online";
   const description = "Compress PDF files online for free. Reduce file size while keeping quality, making PDFs easier to email, upload, and share. Fast, secure, and no installation required.";
   const url = "/tools/pdf-compressor";
 
