@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import PdfMergerClient from './PdfMergerClient'; // Import the new client component
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Free Online PDF Merger - Combine Multiple PDF Files into One";
+  const title = "Free PDF Merger - Combine Multiple PDFs Online | OpusTools";
   const description = "Merge PDF files online for free. Arrange and combine multiple PDFs into one document. Fast, secure, and easy-to-use PDF merger – no installation required.";
   const url = "/tools/pdf-merger";
 

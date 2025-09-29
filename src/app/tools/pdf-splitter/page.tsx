@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import PdfSplitterClient from './PdfSplitterClient'; // Import the new client component
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Free Online PDF Splitter - Extract Pages or Split PDF Files Easily";
+  const title = "Free PDF Splitter - Extract or Split PDF Pages | OpusTools";
   const description = "Split PDF files online for free. Extract specific pages or ranges into new PDFs. Fast, secure, and easy-to-use PDF splitter – no installation required.";
   const url = "/tools/pdf-splitter";
 
