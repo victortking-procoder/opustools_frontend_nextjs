@@ -78,7 +78,7 @@ export default function PdfConverterClient() {
     const formData = new FormData();
     formData.append('tool_type', 'pdf_converter');
     // Your backend expects the key to be 'files' for all pdf tools
-    formData.append('files', file); 
+    formData.append('file', file); 
     formData.append('target_format', targetFormat);
 
     try {

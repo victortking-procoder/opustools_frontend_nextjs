@@ -71,7 +71,7 @@ export default function PdfSplitterClient() {
 
     const formData = new FormData();
     formData.append('tool_type', 'pdf_splitter');
-    formData.append('files', file); // Correct key is 'files' (plural)
+    formData.append('file', file); // Correct key is 'files' (plural)
     formData.append('page_ranges', pageRanges);
 
     try {
