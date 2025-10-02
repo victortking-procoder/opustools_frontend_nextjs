@@ -4,7 +4,7 @@
 import { Metadata } from 'next';
 import ImageResizerClient from './ImageResizerClient'; 
 // NOTE: Make sure the path to your styles is correct
-import styles from './ImageTool.module.css'; 
+import styles from '../ImageTool.module.css'; 
 
 // --- 1. Static Metadata for the Canonical Page ---
 export const metadata: Metadata = {
