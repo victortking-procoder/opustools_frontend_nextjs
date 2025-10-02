@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import ImageResizerClient from '../ImageResizerClient'; 
 import { getToolDataBySlug, getSlugs, getDepthContent } from '@/lib/dynamic-utils';
 // NOTE: Make sure the path to your styles is correct.
-import styles from '@/src/app/tools/image-resizer/ImageTool.module.css';
+import styles from '@/app/ImageTool.module.css';
 
 // --- 1. Programmatic Static Generation ---
 export async function generateStaticParams() {

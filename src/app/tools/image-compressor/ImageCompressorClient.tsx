@@ -6,8 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import Link from 'next/link';
 import api from '@/lib/api';
-import styles from '../ImageTool.module.css';
-import { StyleRegistry } from 'styled-jsx';
+import styles from '@/app/ImageTool.module.css';
 
 interface JobStatus {
   id: string;
