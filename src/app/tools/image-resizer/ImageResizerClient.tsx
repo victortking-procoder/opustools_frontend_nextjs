@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 // NOTE: Ensure your API client path is correct
 import api from '@/lib/api'; 
-import styles from '../ImageTool.module.css'; 
+import styles from '@/app/ImageTool.module.css';
 
 interface JobStatus {
   id: string;
