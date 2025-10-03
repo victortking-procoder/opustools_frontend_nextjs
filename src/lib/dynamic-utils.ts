@@ -15,7 +15,7 @@ interface ClassNames {
     relatedLinks: string;
 }
 
-// --- Data Source (41 Keywords mapped to 21 Unique Slugs) ---
+// --- Data Source ---
 const dynamicData: DynamicData = {
     "primary_keywords": {
         "resize-image-in-inch": "image resizer inches",
@@ -65,7 +65,34 @@ const dynamicData: DynamicData = {
     }
 };
 
-// --- Helper Functions ---
+// --- Helper Functions for Intent and Related Links ---
+
+const ALL_SLUGS = Object.keys(dynamicData.primary_keywords);
+
+/**
+ * Selects a random, unique subset of slugs for internal linking.
+ * @param currentSlug - The slug of the current page, which is excluded.
+ * @param count - The number of random slugs to return (default 10).
+ */
+const getRandomRelatedSlugs = (currentSlug: string, count: number = 10): { slug: string, keyword: string }[] => {
+    const availableSlugs = ALL_SLUGS.filter(slug => slug !== currentSlug);
+    
+    // Create a copy for shuffling
+    const slugsToShuffle = [...availableSlugs];
+
+    // Fisher-Yates shuffle
+    for (let i = slugsToShuffle.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [slugsToShuffle[i], slugsToShuffle[j]] = [slugsToShuffle[j], slugsToShuffle[i]];
+    }
+
+    const selectedSlugs = slugsToShuffle.slice(0, count);
+
+    return selectedSlugs.map(slug => ({
+        slug: slug,
+        keyword: dynamicData.primary_keywords[slug]
+    }));
+};
 
 const getKeywordType = (slug: string) => {
     if (slug.includes('kb') || slug.includes('mb')) return 'file_size';
@@ -78,65 +105,90 @@ const getKeywordType = (slug: string) => {
 export const getDepthContent = (primaryKeyword: string, slug: string, classes: ClassNames) => {
     const type = getKeywordType(slug);
     const allKeywords = dynamicData.all_keywords[slug] || []; 
-    let h2Topic, mainBenefit, howToStep, faqQuestion;
+    let h2Topic, mainBenefit, howToStep, faqQuestion, faqAnswer;
 
+    // --- DEEP INTENT CONTENT REWRITE ---
     if (type === 'file_size') {
-        h2Topic = `Achieving the Perfect ${primaryKeyword.toUpperCase()} File Size`;
-        mainBenefit = `This is essential for uploads to platforms that enforce strict file size limits, like government portals or email attachments. Our tool uses smart compression and scaling to help you hit the exact <strong>${primaryKeyword}</strong> target while preserving maximum quality.`;
-        howToStep = `Simply input the target size (e.g., '500 KB') or the desired pixel dimensions into the respective fields.`;
-        faqQuestion = `Will resizing to ${primaryKeyword} affect my image quality?`;
+        h2Topic = `Bypass Upload Limits: Smart Compression to Exactly ${primaryKeyword.toUpperCase()}`;
+        mainBenefit = `You need a precise file size—not just smaller. This is critical for university application portals, email attachments, or job submissions that enforce strict limits (e.g., must be under <strong>${primaryKeyword}</strong>). Our tool uses intelligent lossy and lossless compression to hit your target size with minimal visual impact.`;
+        howToStep = `Simply input the target size (e.g., '500 KB') or use the slider for size control. Our system handles the pixel reduction and compression simultaneously.`;
+        faqQuestion = `How does OpusTools resize an image to a specific file size like ${primaryKeyword}?`;
+        faqAnswer = `Our proprietary algorithm analyzes the image content and applies the highest possible compression factor required to reach the target size, prioritizing visual quality until the final size constraint is met. It's a precise balance of pixel scaling and data reduction.`;
     } else if (type === 'unit_based') {
-        h2Topic = `The High-Precision ${primaryKeyword.toUpperCase()} Tool`;
-        mainBenefit = `Converting from pixels to units like inches or millimeters is critical for printing and professional documentation. Our resizer handles this complex conversion instantly and accurately.`;
-        howToStep = `Use our advanced options to specify the desired physical unit (inches, mm, cm) and the required DPI/PPI.`;
-        faqQuestion = `How does OpusTools convert pixels to ${primaryKeyword}?`;
+        h2Topic = `The Print-Ready Solution: Accurate ${primaryKeyword.toUpperCase()} Converter`;
+        mainBenefit = `Digital pixels don't easily translate to physical prints. If you are preparing a document, passport photo, or poster, you need the reliable conversion of pixels to inches/mm based on DPI. Our tool locks in the physical size, ensuring your printed output is perfect.`;
+        howToStep = `Upload your image, select 'Inches' or 'MM' as the unit, and specify the desired DPI (dots per inch), usually 300 for high-quality printing.`;
+        faqQuestion = `Why do I need to worry about DPI when converting to ${primaryKeyword}?`;
+        faqAnswer = `DPI (dots per inch) is the critical link between pixels and physical size. A high DPI (like 300) for a <strong>${primaryKeyword}</strong> photo ensures the image doesn't look pixelated when printed, as the tool adjusts the resolution accordingly.`;
     } else if (type === 'stretch') {
-        h2Topic = `Advanced ${primaryKeyword.toUpperCase()} Functionality`;
-        mainBenefit = `The ability to stretch an image is required for specific background or banner designs. We provide this feature while offering controls to minimize distortion artifacts.`;
-        howToStep = `Enter different values for width and height to force the image stretch.`;
-        faqQuestion = `Is stretching an image bad for quality?`;
-    } else {
-        h2Topic = `Exact Pixel ${primaryKeyword.toUpperCase()} Resizer`;
-        mainBenefit = `You need exact pixel matches for avatars, social media banners, or web assets. Our tool focuses on preserving your image's aspect ratio while hitting the precise <strong>${primaryKeyword}</strong> dimensions.`;
-        howToStep = `Enter the target width and height in pixels. For example, enter '256' for both fields for the <strong>${primaryKeyword}</strong> conversion.`;
-        faqQuestion = `What is the best way to resize an image to ${primaryKeyword}?`;
+        h2Topic = `Creative Control: How to ${primaryKeyword.toUpperCase()} for Banners and Design`;
+        mainBenefit = `Stretching or warping an image is a specific design requirement, often for background banners, unique thumbnails, or fitting a non-standard aspect ratio. Our stretcher allows you to force a width/height mismatch while providing visual feedback to manage distortion.`;
+        howToStep = `Enter different values for width and height in the resizing fields (e.g., 800 width, 200 height) to force the stretch and preview the result before saving.`;
+        faqQuestion = `Can stretching an image completely ruin its quality?`;
+        faqAnswer = `Stretching will always introduce distortion, as pixels are interpolated. We use advanced scaling methods to minimize blockiness, but it is best used when visual fidelity can be compromised for a specific layout need.`;
+    } else { // dimension_based
+        h2Topic = `Pixel-Perfect Precision: Instantly Resize to ${primaryKeyword.toUpperCase()}`;
+        mainBenefit = `Whether it's an exact avatar size, a social media post, or a specific platform requirement (like <strong>${primaryKeyword}</strong>), precision matters. Our tool ensures your image hits the exact pixel dimensions every time, maintaining aspect ratio unless you override it.`;
+        howToStep = `Enter the target width and height in the pixel fields. For common square dimensions like <strong>${primaryKeyword}</strong>, simply enter the value in one field, and the other will auto-populate to maintain scale.`;
+        faqQuestion = `What kind of images typically require a ${primaryKeyword} size?`;
+        faqAnswer = `Square dimensions like <strong>${primaryKeyword}</strong> are standard for user avatars, small icons, specific social media thumbnails (like certain parts of LinkedIn/Twitter profiles), and many application submission forms.`;
     }
 
+    // Generate the list of related keywords for completeness and depth (All 41 keywords)
     const keywordListHtml = allKeywords.length > 1
-        ? `<h3 class="${classes.seoSubtitle}">Related Image Resizer Keywords</h3>
-           <p>Our tool addresses all related search queries, including variations like: <strong>${allKeywords.join(', ')}</strong>.</p>`
+        ? `<h3 class="${classes.seoSubtitle}">Related Search Queries Handled by This Tool</h3>
+           <p>This tool is designed to meet all variations of this size requirement, including search terms like: ${allKeywords.map(k => `<strong>${k}</strong>`).join(', ')}.</p>`
         : '';
 
-    // Full HTML structure using the passed dynamic class names (Fix for Error 2)
+    // Generate 10 random related dynamic pages (NEW REQUIREMENT)
+    const relatedLinks = getRandomRelatedSlugs(slug, 10);
+    
+    // HTML block containing the 10 random internal links
+    const internalLinksHtml = `
+        <div class="${classes.relatedLinks}">
+          <h2 class="${classes.seoTitle}">Explore 10 Related Resizing Tools (Internal Linking)</h2>
+          <p class="${classes.description}">Need a different size? Our tool library covers every common dimension, unit, and file size requirement. Click a link below to jump straight to the exact tool you need:</p>
+          <ul>
+            ${relatedLinks.map(link => `
+                <li><a href="/tools/image-resizer/${link.slug}" title="Resize image to ${link.keyword}">${link.keyword.charAt(0).toUpperCase() + link.keyword.slice(1)} Resizer Tool</a></li>
+            `).join('')}
+          </ul>
+        </div>
+    `;
+
+    // Full HTML structure for the server component
     return `
         <h2 class="${classes.seoTitle}">${h2Topic}</h2>
         <p class="${classes.description}">${mainBenefit}</p>
 
-        <h3 class="${classes.seoSubtitle}">How to Use the OpusTools Resizer for ${primaryKeyword}</h3>
+        <h3 class="${classes.seoSubtitle}">Step-by-Step Guide for Resizing</h3>
         <p>
+            The process is fast, simple, and requires no software download:
             <ol>
                 <li><strong>Upload:</strong> Drag and drop your image file into the tool above.</li>
-                <li><strong>Specify:</strong> ${howToStep}</li>
-                <li><strong>Resize:</strong> Click the "Resize Image" button.</li>
-                <li><strong>Download:</strong> Your newly resized file will be available in seconds.</li>
+                <li><strong>Specify Requirements:</strong> ${howToStep}</li>
+                <li><strong>Process:</strong> Click "Resize Image" and wait seconds.</li>
+                <li><strong>Verify & Download:</strong> Check the size in the preview and download your high-quality resized file.</li>
             </ol>
         </p>
 
         ${keywordListHtml}
 
-        <h2 class="${classes.seoTitle}">Frequently Asked Questions (FAQ) about ${primaryKeyword}</h2>
+        <h2 class="${classes.seoTitle}">Frequently Asked Questions (FAQ)</h2>
         <div class="${classes.faqItem}">
             <h3 class="${classes.seoSubtitle}">${faqQuestion}</h3>
-            <p>For dimension-based resizing, we maintain the highest quality possible. For file-size targets (like <strong>${primaryKeyword}</strong>), some intelligent compression is required, but our algorithms prioritize minimal visual loss. Always use a high-resolution source image for the best results.</p>
+            <p>${faqAnswer}</p>
         </div>
         
+        ${internalLinksHtml}
+
         <div class="${classes.relatedLinks}">
-          <h2>Related Tools & Guides</h2>
-          <p>You may also be interested in:</p>
+          <h2 class="${classes.seoTitle}">Complementary Tools</h2>
+          <p>These essential tools complement your resizing needs:</p>
           <ul>
-            <li><a href="/tools/image-compressor">Image Compressor</a> - Make your resized image even smaller for faster loading.</li>
-            <li><a href="/tools/image-converter">Image Converter</a> - Change your image to JPG, PNG, and more after resizing.</li>
-            <li><a href="https://opustools.xyz/blog/the-ultimate-image-resizer-guide" target="_blank" rel="noopener noreferrer">Read our complete guide on Mastering Image Resizing</a></li>
+            <li><a href="/tools/image-compressor">Image Compressor</a> - Reduce file size further without changing dimensions.</li>
+            <li><a href="/tools/image-converter">Image Converter</a> - Convert formats like PNG to JPG.</li>
+            <li><a href="https://opustools.xyz/blog/the-ultimate-image-resizer-guide" target="_blank" rel="noopener noreferrer">The Ultimate Image Resizer Guide (External Link)</a></li>
           </ul>
         </div>
     `;
@@ -144,22 +196,36 @@ export const getDepthContent = (primaryKeyword: string, slug: string, classes: C
 
 // --- Main Export Functions ---
 
-// Returns the full data needed by the Server Component
+// getToolDataBySlug now returns content with deep intent
 export function getToolDataBySlug(slug: string) {
     const mainKeyword = dynamicData.primary_keywords[slug];
     if (!mainKeyword) return null;
 
     const formattedKeyword = mainKeyword.charAt(0).toUpperCase() + mainKeyword.slice(1);
-    const primaryTitle = `Free Online Tool to ${formattedKeyword}`;
+    const primaryTitle = `Resize Image to ${formattedKeyword} - Online Tool`;
+    
+    // Deep Intent Metadata Rewrites
+    let description;
+    const type = getKeywordType(slug);
+
+    if (type === 'file_size') {
+        description = `Instantly resize your images to exactly ${mainKeyword} to bypass any upload limits. Our smart compressor maintains the best quality while hitting your precise file size target.`;
+    } else if (type === 'unit_based') {
+        description = `Convert image size from pixels to ${mainKeyword} with perfect DPI accuracy for printing documents, passports, or professional photo paper. Free and instant conversion.`;
+    } else if (type === 'stretch') {
+        description = `Use our online image stretcher to force resize your image to fit non-standard banners or backgrounds. Quickly distort and scale your photo to ${mainKeyword}.`;
+    } else { // dimension_based
+        description = `Need an exact size? Use our free tool to precisely resize your image to ${mainKeyword}. Perfect for social media avatars, profile headers, or application forms.`;
+    }
 
     return {
         // 1. Metadata & Titles
         title: `${primaryTitle} - OpusTools`,
-        description: `Use our free, fast, and secure online tool to instantly ${mainKeyword} without losing quality. Perfect for all file types and for achieving precise dimensions or file sizes.`,
+        description: description,
         // 2. Data for Server Component logic
-        h1Text: primaryTitle,
-        introParagraph: `When you need to ${mainKeyword}, precision is key. Our online resizer is designed for high-accuracy pixel, unit, and file size resizing, ensuring you meet all your specific upload requirements.`,
-        mainKeyword: mainKeyword, // Important for calling getDepthContent
+        h1Text: `Free Online Tool to Resize Image to ${formattedKeyword}`,
+        introParagraph: `When your project demands an exact size of ${mainKeyword}, our tool provides pixel-perfect accuracy. Use it to quickly transform your photo for any digital or print requirement.`,
+        mainKeyword: mainKeyword,
     };
 }
 
