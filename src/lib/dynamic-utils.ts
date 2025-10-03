@@ -105,48 +105,67 @@ const getKeywordType = (slug: string) => {
 export const getDepthContent = (primaryKeyword: string, slug: string, classes: ClassNames) => {
     const type = getKeywordType(slug);
     const allKeywords = dynamicData.all_keywords[slug] || []; 
-    let h2Topic, mainBenefit, howToStep, faqQuestion, faqAnswer;
+    let h2Topic, mainBenefit, howToStep, faqQuestion, faqAnswer, faqQuestion2, faqAnswer2; // ✅ NEW FAQ VARIABLES
 
     // --- DEEP INTENT CONTENT REWRITE ---
     if (type === 'file_size') {
         h2Topic = `Bypass Upload Limits: Smart Compression to Exactly ${primaryKeyword.toUpperCase()}`;
         mainBenefit = `You need a precise file size—not just smaller. This is critical for university application portals, email attachments, or job submissions that enforce strict limits (e.g., must be under <strong>${primaryKeyword}</strong>). Our tool uses intelligent lossy and lossless compression to hit your target size with minimal visual impact.`;
         howToStep = `Simply input the target size (e.g., '500 KB') or use the slider for size control. Our system handles the pixel reduction and compression simultaneously.`;
+        
+        // ✅ EXPANDED FAQ 1 (File Size)
         faqQuestion = `How does OpusTools resize an image to a specific file size like ${primaryKeyword}?`;
-        faqAnswer = `Our proprietary algorithm analyzes the image content and applies the highest possible compression factor required to reach the target size, prioritizing visual quality until the final size constraint is met. It's a precise balance of pixel scaling and data reduction.`;
+        faqAnswer = `Our proprietary smart compression algorithm dynamically analyzes the image's complexity and metadata. It then applies the ideal combination of scaling and compression (lossy and lossless techniques) to hit the exact target of **${primaryKeyword}** without excessive quality degradation. This ensures compliance with submission forms while maximizing visual clarity.`;
+        faqQuestion2 = `Is it better to compress or scale an image to reduce file size?`;
+        faqAnswer2 = `If you strictly need to meet a file size limit, it's often better to **compress first**, then scale only if compression is insufficient. Scaling (reducing pixels) permanently removes data, while compression attempts to minimize file size by optimizing existing data. Our tool automatically attempts the best balance.`;
+
     } else if (type === 'unit_based') {
         h2Topic = `The Print-Ready Solution: Accurate ${primaryKeyword.toUpperCase()} Converter`;
         mainBenefit = `Digital pixels don't easily translate to physical prints. If you are preparing a document, passport photo, or poster, you need the reliable conversion of pixels to inches/mm based on DPI. Our tool locks in the physical size, ensuring your printed output is perfect.`;
         howToStep = `Upload your image, select 'Inches' or 'MM' as the unit, and specify the desired DPI (dots per inch), usually 300 for high-quality printing.`;
+        
+        // ✅ EXPANDED FAQ 2 (Unit Based)
         faqQuestion = `Why do I need to worry about DPI when converting to ${primaryKeyword}?`;
-        faqAnswer = `DPI (dots per inch) is the critical link between pixels and physical size. A high DPI (like 300) for a <strong>${primaryKeyword}</strong> photo ensures the image doesn't look pixelated when printed, as the tool adjusts the resolution accordingly.`;
+        faqAnswer = `DPI (Dots Per Inch) is the bridge between digital pixels and physical size. If you specify a size in inches/mm without a DPI, the print size is unpredictable. A high DPI (like 300) for a <strong>${primaryKeyword}</strong> photo ensures the image doesn't look pixelated when printed, providing professional, high-resolution output.`;
+        faqQuestion2 = `What is the difference between PPI and DPI, and which should I use?`;
+        faqAnswer2 = `PPI (Pixels Per Inch) is a digital measure for screen display. DPI (Dots Per Inch) is a printing term. When using our tool to resize an image for **printing** to a physical unit like **${primaryKeyword}**, you should focus on **DPI**. We use the specified DPI value to calculate the exact pixel dimensions required.`;
+
     } else if (type === 'stretch') {
         h2Topic = `Creative Control: How to ${primaryKeyword.toUpperCase()} for Banners and Design`;
         mainBenefit = `Stretching or warping an image is a specific design requirement, often for background banners, unique thumbnails, or fitting a non-standard aspect ratio. Our stretcher allows you to force a width/height mismatch while providing visual feedback to manage distortion.`;
         howToStep = `Enter different values for width and height in the resizing fields (e.g., 800 width, 200 height) to force the stretch and preview the result before saving.`;
+        
+        // ✅ EXPANDED FAQ 3 (Stretch)
         faqQuestion = `Can stretching an image completely ruin its quality?`;
-        faqAnswer = `Stretching will always introduce distortion, as pixels are interpolated. We use advanced scaling methods to minimize blockiness, but it is best used when visual fidelity can be compromised for a specific layout need.`;
+        faqAnswer = `Yes, extreme stretching introduces distortion because the software is forced to invent pixel data (interpolation). While our tool uses advanced scaling to minimize artifacts (blockiness/blurring), stretching should only be used when necessary to fit non-standard layouts, such as custom web banners or backgrounds.`;
+        faqQuestion2 = `How can I stretch an image without losing its key content?`;
+        faqAnswer2 = `To maintain better context, avoid stretching images with faces or perfect circles. The best strategy is often to use a **Content-Aware Scaling** technique or, alternatively, resizing to the required aspect ratio and using a solid color fill for the remaining space (padding) instead of stretching.`;
+
     } else { // dimension_based
         h2Topic = `Pixel-Perfect Precision: Instantly Resize to ${primaryKeyword.toUpperCase()}`;
         mainBenefit = `Whether it's an exact avatar size, a social media post, or a specific platform requirement (like <strong>${primaryKeyword}</strong>), precision matters. Our tool ensures your image hits the exact pixel dimensions every time, maintaining aspect ratio unless you override it.`;
         howToStep = `Enter the target width and height in the pixel fields. For common square dimensions like <strong>${primaryKeyword}</strong>, simply enter the value in one field, and the other will auto-populate to maintain scale.`;
+        
+        // ✅ EXPANDED FAQ 4 (Dimension Based)
         faqQuestion = `What kind of images typically require a ${primaryKeyword} size?`;
-        faqAnswer = `Square dimensions like <strong>${primaryKeyword}</strong> are standard for user avatars, small icons, specific social media thumbnails (like certain parts of LinkedIn/Twitter profiles), and many application submission forms.`;
+        faqAnswer = `Exact, specific dimensions like **${primaryKeyword}** are essential for social media platform requirements (avatars, profile headers), e-commerce product listings, and submission forms. Using the wrong size can lead to automatic cropping or quality loss.`;
+        faqQuestion2 = `Should I maintain the aspect ratio when resizing to a fixed pixel size?`;
+        faqAnswer2 = `Generally, **yes**, you should maintain the aspect ratio (by leaving one dimension field blank) to prevent distortion. However, if a platform explicitly requires a specific, non-proportional size (e.g., a banner), you must enter both values, knowing that stretching will occur. Our tool gives you the control to choose.`;
     }
 
-    // Generate the list of related keywords for completeness and depth (All 41 keywords)
+    // Generate the list of related keywords
     const keywordListHtml = allKeywords.length > 1
         ? `<h3 class="${classes.seoSubtitle}">Related Search Queries Handled by This Tool</h3>
            <p>This tool is designed to meet all variations of this size requirement, including search terms like: ${allKeywords.map(k => `<strong>${k}</strong>`).join(', ')}.</p>`
         : '';
 
-    // Generate 10 random related dynamic pages (NEW REQUIREMENT)
+    // Generate 10 random related dynamic pages
     const relatedLinks = getRandomRelatedSlugs(slug, 10);
     
     // HTML block containing the 10 random internal links
     const internalLinksHtml = `
         <div class="${classes.relatedLinks}">
-          <h2 class="${classes.seoTitle}">Explore 10 Related Resizing Tools (Internal Linking)</h2>
+          <h2 class="${classes.seoTitle}">Related Resizing Tools</h2>
           <p class="${classes.description}">Need a different size? Our tool library covers every common dimension, unit, and file size requirement. Click a link below to jump straight to the exact tool you need:</p>
           <ul>
             ${relatedLinks.map(link => `
@@ -156,7 +175,7 @@ export const getDepthContent = (primaryKeyword: string, slug: string, classes: C
         </div>
     `;
 
-    // Full HTML structure for the server component
+    // Full HTML structure for the server component (Updated to include two FAQ items)
     return `
         <h2 class="${classes.seoTitle}">${h2Topic}</h2>
         <p class="${classes.description}">${mainBenefit}</p>
@@ -176,8 +195,12 @@ export const getDepthContent = (primaryKeyword: string, slug: string, classes: C
 
         <h2 class="${classes.seoTitle}">Frequently Asked Questions (FAQ)</h2>
         <div class="${classes.faqItem}">
-            <h3 class="${classes.seoSubtitle}">${faqQuestion}</h3>
+            <h3 class="${classes.seoSubtitle}">1. ${faqQuestion}</h3>
             <p>${faqAnswer}</p>
+        </div>
+        <div class="${classes.faqItem}">
+            <h3 class="${classes.seoSubtitle}">2. ${faqQuestion2}</h3>
+            <p>${faqAnswer2}</p>
         </div>
         
         ${internalLinksHtml}
@@ -194,9 +217,8 @@ export const getDepthContent = (primaryKeyword: string, slug: string, classes: C
     `;
 };
 
-// --- Main Export Functions ---
+// --- Main Export Functions (Metadata remains the same as it was already optimized) ---
 
-// getToolDataBySlug now returns content with deep intent
 export function getToolDataBySlug(slug: string) {
     const mainKeyword = dynamicData.primary_keywords[slug];
     if (!mainKeyword) return null;
@@ -220,10 +242,10 @@ export function getToolDataBySlug(slug: string) {
 
     return {
         // 1. Metadata & Titles
-        title: `${primaryTitle} - OpusTools`,
+        title: `${primaryTitle}`,
         description: description,
         // 2. Data for Server Component logic
-        h1Text: `Free Online Tool to Resize Image to ${formattedKeyword}`,
+        h1Text: `Resize Image to ${formattedKeyword}`,
         introParagraph: `When your project demands an exact size of ${mainKeyword}, our tool provides pixel-perfect accuracy. Use it to quickly transform your photo for any digital or print requirement.`,
         mainKeyword: mainKeyword,
     };
