@@ -211,7 +211,7 @@ export const getDepthContent = (primaryKeyword: string, slug: string, classes: C
           <ul>
             <li><a href="/tools/image-compressor">Image Compressor</a> - Reduce file size further without changing dimensions.</li>
             <li><a href="/tools/image-converter">Image Converter</a> - Convert formats like PNG to JPG.</li>
-            <li><a href="https://opustools.xyz/blog/the-ultimate-image-resizer-guide" target="_blank" rel="noopener noreferrer">The Ultimate Image Resizer Guide (External Link)</a></li>
+            <li><a href="https://opustools.xyz/blog/the-ultimate-image-resizer-guide-resizing-images-to-20kb-50kb-and-beyond" target="_blank" rel="noopener noreferrer">The Ultimate Image Resizer Guide (External Link)</a></li>
           </ul>
         </div>
     `;
